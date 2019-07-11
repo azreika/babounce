@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
+import math
 import pygame
 import random
-import math
 
 # config options
 (width, height) = (1750, 1200);
@@ -10,7 +10,7 @@ bg_color = (125,125,125)
 ball_color = (235,109,125)
 num_balls = 10
 (ball_min_rad, ball_max_rad) = (35,115)
-ball_max_speed = 2
+ball_max_speed = 1.25
 ball_thickness = 3
 
 class Ball:
@@ -23,10 +23,10 @@ class Ball:
         self.speed = 1
         self.angle = 0
 
-    def move(self):
+    def move(self, dt=1):
         # update position
-        self.x += math.sin(self.angle) * self.speed
-        self.y += math.cos(self.angle) * self.speed
+        self.x += math.sin(self.angle) * self.speed * dt
+        self.y += math.cos(self.angle) * self.speed * dt
 
         # bounce if necessary
         self.bounce()
@@ -84,6 +84,7 @@ def clear(screen):
 def main():
     # set up the screen
     screen = pygame.display.set_mode((width, height))
+    clock = pygame.time.Clock()
     pygame.display.set_caption("BaBounce")
     clear(screen)
 
@@ -102,8 +103,9 @@ def main():
             break
 
         # update the balls
+        dt = clock.tick(60)
         for ball in balls:
-            ball.move()
+            ball.move(dt)
 
         # clear the screen
         clear(screen)
