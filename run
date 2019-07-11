@@ -7,9 +7,9 @@ import math
 # config options
 (width, height) = (1750, 1200);
 bg_color = (125,125,125)
-ball_color = (255,209,220)
+ball_color = (235,109,125)
 num_balls = 10
-(ball_min_rad, ball_max_rad) = (25,100)
+(ball_min_rad, ball_max_rad) = (35,115)
 ball_max_speed = 2
 ball_thickness = 3
 
@@ -17,7 +17,7 @@ class Ball:
     def __init__(self, pos, size):
         (self.x, self.y) = pos
         self.size = size
-        self.colour = (255,209,220)
+        self.colour = ball_color
         self.thickness = ball_thickness
 
         self.speed = 1
