@@ -2,6 +2,14 @@
 
 import pygame
 import random
+import math
+
+# config options
+(width, height) = (1750, 1200);
+bg_color = (125,125,125)
+ball_color = (255,209,220)
+num_balls = 10
+(ball_min_rad, ball_max_rad) = (25,100)
 
 class Ball:
     def __init__(self, pos, size):
@@ -13,13 +21,25 @@ class Ball:
     def display(self, screen):
         pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, self.thickness)
 
-def main():
-    # config options
-    (width, height) = (1750, 1200);
-    bg_color = (125,125,125)
-    ball_color = (255,209,220)
-    num_balls = 10
+    def overlaps(self, ball):
+        (x1,x2) = self.x, ball.x
+        (y1,y2) = self.y, ball.y
+        distance = math.sqrt((x1-x2)**2 + (y1-y2)**2)
+        return distance <= ball.size + self.size
 
+def generate_ball():
+    size = random.randint(ball_min_rad, ball_max_rad)
+    x = random.randint(size, width-size)
+    y = random.randint(size, height-size)
+    return Ball((x,y), size)
+
+def disjoint(balls, ball):
+    for other in balls:
+        if ball.overlaps(other):
+            return False
+    return True
+
+def main():
     # set up the screen
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("BaBounce")
@@ -28,10 +48,10 @@ def main():
     # generate random balls
     balls = []
     for n in range(num_balls):
-        size = random.randint(25,100)
-        x = random.randint(size, width-size)
-        y = random.randint(size, height-size)
-        balls.append(Ball((x,y), size))
+        ball = generate_ball()
+        while not disjoint(balls, ball):
+            ball = generate_ball()
+        balls.append(ball)
 
     # display the balls
     for ball in balls:
