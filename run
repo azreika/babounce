@@ -10,6 +10,7 @@ bg_color = (125,125,125)
 ball_color = (255,209,220)
 num_balls = 10
 (ball_min_rad, ball_max_rad) = (25,100)
+ball_max_speed = 2
 
 class Ball:
     def __init__(self, pos, size):
@@ -38,7 +39,12 @@ def generate_ball():
     size = random.randint(ball_min_rad, ball_max_rad)
     x = random.randint(size, width-size)
     y = random.randint(size, height-size)
-    return Ball((x,y), size)
+
+    ball = Ball((x,y), size)
+    ball.speed = random.uniform(0, ball_max_speed)
+    ball.angle = random.uniform(0, 2*math.pi)
+
+    return ball
 
 def disjoint(balls, ball):
     for other in balls:
