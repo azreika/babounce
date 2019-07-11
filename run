@@ -2,15 +2,30 @@
 
 import pygame
 
+class Ball:
+    def __init__(self, pos, size):
+        (self.x, self.y) = pos
+        self.size = size
+        self.colour = (255,209,220)
+        self.thickness = 0
+
+    def display(self, screen):
+        pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, self.thickness)
+
 def main():
     # config options
-    (width, height) = (300, 200);
+    (width, height) = (1750, 1200);
     bg_color = (125,125,125)
+    ball_color = (255,209,220)
 
     # set up the screen
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("BaBounce")
     screen.fill(bg_color)
+
+    # draw a ball
+    ball = Ball((width//3, height//2), 100)
+    ball.display(screen)
 
     # show everything
     pygame.display.flip()
