@@ -12,6 +12,8 @@ num_balls = 10
 (ball_min_rad, ball_max_rad) = (35,115)
 ball_max_speed = 1.25
 ball_thickness = 3
+ball_elasticity = 0.65
+ball_drag = 0.001
 
 class Ball:
     def __init__(self, pos, size):
@@ -23,14 +25,19 @@ class Ball:
         self.speed = 1
         self.angle = 0
 
+        self.asleep = False
+
     def move(self, dt=1):
         # update position
         self.x += math.sin(self.angle) * self.speed * dt
         self.y += math.cos(self.angle) * self.speed * dt
 
-        # update vector
+        # apply gravity
         gravity = (0, 0.02)
         (self.angle, self.speed) = add_vectors((self.angle, self.speed), gravity)
+
+        # apply drag
+        self.speed *= (1-ball_drag)
 
         # bounce if necessary
         self.bounce()
@@ -39,16 +46,20 @@ class Ball:
         if self.x < self.size:
             self.angle = - self.angle
             self.x = 2 * self.size - self.x
+            self.speed *= ball_elasticity
         elif self.x > width - self.size:
             self.angle = 2*math.pi - self.angle
             self.x = 2 * (width - self.size) - self.x
+            self.speed *= ball_elasticity
 
         if self.y < self.size:
             self.angle = math.pi - self.angle
             self.y = 2 * self.size - self.y
+            self.speed *= ball_elasticity
         elif self.y > height - self.size:
             self.angle = - self.angle + math.pi
             self.y = 2 * (height - self.size) - self.y
+            self.speed *= ball_elasticity
 
     def display(self, screen):
         # draw inside
