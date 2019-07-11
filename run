@@ -39,6 +39,12 @@ def disjoint(balls, ball):
             return False
     return True
 
+def program_exited():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return True
+    return False
+
 def main():
     # set up the screen
     screen = pygame.display.set_mode((width, height))
@@ -53,20 +59,18 @@ def main():
             ball = generate_ball()
         balls.append(ball)
 
-    # display the balls
-    for ball in balls:
-        ball.display(screen)
-
-    # show everything
-    pygame.display.flip()
-
     # run the program
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while True:
+        # check if we have to quit
+        if program_exited():
+            break
 
+        # draw the balls
+        for ball in balls:
+            ball.display(screen)
+
+        # show everything
+        pygame.display.flip()
 
 if __name__ == "__main__":
     main()
