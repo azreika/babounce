@@ -38,13 +38,17 @@ class Ball:
     def bounce(self):
         if self.x < self.size:
             self.angle = - self.angle
+            self.x = 2 * self.size - self.x
         elif self.x > width - self.size:
             self.angle = 2*math.pi - self.angle
+            self.x = 2 * (width - self.size) - self.x
 
         if self.y < self.size:
             self.angle = math.pi - self.angle
+            self.y = 2 * self.size - self.y
         elif self.y > height - self.size:
             self.angle = - self.angle + math.pi
+            self.y = 2 * (height - self.size) - self.y
 
     def display(self, screen):
         # draw inside
