@@ -24,8 +24,23 @@ class Ball:
         self.angle = 0
 
     def move(self):
+        # update position
         self.x += math.sin(self.angle) * self.speed
         self.y += math.cos(self.angle) * self.speed
+
+        # bounce if necessary
+        self.bounce()
+
+    def bounce(self):
+        if self.x < self.size:
+            self.angle = - self.angle
+        elif self.x > width - self.size:
+            self.angle = 2*math.pi - self.angle
+
+        if self.y < self.size:
+            self.angle = math.pi - self.angle
+        elif self.y > height - self.size:
+            self.angle = - self.angle + math.pi
 
     def display(self, screen):
         # draw inside
