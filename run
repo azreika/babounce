@@ -28,6 +28,10 @@ class Ball:
         self.asleep = False
 
     def move(self, dt=1):
+        # skip if asleep
+        if self.asleep:
+            return
+
         # update position
         self.x += math.sin(self.angle) * self.speed * dt
         self.y += math.cos(self.angle) * self.speed * dt
@@ -41,6 +45,10 @@ class Ball:
 
         # bounce if necessary
         self.bounce()
+
+        # check if it should sleep
+        if self.speed <= 0.01 and (height - (self.y + self.size)) < 5:
+            self.asleep = True
 
     def bounce(self):
         if self.x < self.size:
