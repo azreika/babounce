@@ -11,13 +11,14 @@ ball_color = (255,209,220)
 num_balls = 10
 (ball_min_rad, ball_max_rad) = (25,100)
 ball_max_speed = 2
+ball_thickness = 3
 
 class Ball:
     def __init__(self, pos, size):
         (self.x, self.y) = pos
         self.size = size
         self.colour = (255,209,220)
-        self.thickness = 0
+        self.thickness = ball_thickness
 
         self.speed = 1
         self.angle = 0
@@ -27,7 +28,11 @@ class Ball:
         self.y += math.cos(self.angle) * self.speed
 
     def display(self, screen):
-        pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), self.size, self.thickness)
+        # draw inside
+        pygame.draw.circle(screen, self.colour, (int(self.x), int(self.y)), self.size, 0)
+
+        # draw outside
+        pygame.draw.circle(screen, (0,0,0), (int(self.x), int(self.y)), self.size, self.thickness)
 
     def overlaps(self, ball):
         (x1,x2) = self.x, ball.x
