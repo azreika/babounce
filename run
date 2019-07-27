@@ -134,6 +134,7 @@ def main():
     # set up the screen
     screen = pygame.display.set_mode((width, height))
     clock = pygame.time.Clock()
+    selected_ball = None
     pygame.display.set_caption("BaBounce")
     clear(screen)
 
@@ -156,14 +157,20 @@ def main():
             # mouse click
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
-                ball = get_containing_ball(balls, mouse_x, mouse_y)
-                if ball != None:
-                    ball.toggle_pause()
+                selected_ball = get_containing_ball(balls, mouse_x, mouse_y)
+
+            # mouse release
+            elif event.type == pygame.MOUSEBUTTONUP:
+                selected_ball = None
 
         # update the balls
         dt = clock.tick(60)
         for ball in balls:
-            ball.move(dt)
+            if selected_ball == ball:
+                (selected_ball.x, selected_ball.y) = pygame.mouse.get_pos()
+                ball.asleep = False
+            else:
+                ball.move(dt)
 
         # clear the screen
         clear(screen)
