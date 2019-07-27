@@ -167,11 +167,17 @@ def main():
         dt = clock.tick(60)
         for ball in balls:
             if selected_ball == ball:
-                (ball.x, ball.y) = pygame.mouse.get_pos()
+                # ball selected - do not move until no longer selected
                 ball.asleep = False
-                ball.speed = 0
-                ball.angle = 0
+                (new_x, new_y) = pygame.mouse.get_pos()
+                throw_length = math.sqrt((ball.x - new_x)**2 + (ball.y - new_y)**2)
+                throw_angle = math.acos((new_x - ball.x)/throw_length)
+
+                # update ball speed and angle based on new mouse position
+                ball.speed = throw_length * 0.01
+                ball.angle = throw_angle + math.pi/2
             else:
+                # move if the ball is not selected
                 ball.move(dt)
 
         # clear the screen
