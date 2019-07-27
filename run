@@ -5,9 +5,11 @@ import pygame
 import random
 
 # config options
-(width, height) = (1750, 1200);
+(width, height) = (1750, 1200)
 bg_color = (125,125,125)
 ball_color = (235,109,125)
+guideline_color = (255,255,255)
+guideline_thickness = 5
 num_balls = 10
 (ball_min_rad, ball_max_rad) = (35,115)
 ball_max_speed = 1.25
@@ -186,6 +188,12 @@ def main():
         # draw the balls
         for ball in balls:
             ball.display(screen)
+
+        # draw the guideline, if needed
+        if selected_ball != None:
+            ball_pos = (selected_ball.x, selected_ball.y)
+            mouse_pos = pygame.mouse.get_pos()
+            pygame.draw.line(screen, guideline_color, ball_pos, mouse_pos, guideline_thickness)
 
         # show everything
         pygame.display.flip()
