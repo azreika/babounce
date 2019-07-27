@@ -167,8 +167,10 @@ def main():
         dt = clock.tick(60)
         for ball in balls:
             if selected_ball == ball:
-                (selected_ball.x, selected_ball.y) = pygame.mouse.get_pos()
+                (ball.x, ball.y) = pygame.mouse.get_pos()
                 ball.asleep = False
+                ball.speed = 0
+                ball.angle = 0
             else:
                 ball.move(dt)
 
