@@ -12,7 +12,7 @@ num_balls = 10
 (ball_min_rad, ball_max_rad) = (35,115)
 ball_max_speed = 1.25
 ball_thickness = 3
-ball_elasticity = 0.65
+ball_elasticity = 0.55
 ball_drag = 0.001
 
 class Ball:
@@ -82,6 +82,12 @@ class Ball:
         distance = math.sqrt((x1-x2)**2 + (y1-y2)**2)
         return distance <= ball.size + self.size
 
+    def contains_point(self, x, y):
+        return math.sqrt((x-self.x)**2 + (y-self.y)**2) <= self.size
+
+    def toggle_pause(self):
+        self.asleep = not self.asleep
+
 def add_vectors(v1, v2, dt=1):
     (angle1, length1) = v1
     (angle2, length2) = v2
@@ -109,6 +115,12 @@ def disjoint(balls, ball):
             return False
     return True
 
+def get_containing_ball(balls, mouse_x, mouse_y):
+    for ball in balls:
+        if ball.contains_point(mouse_x, mouse_y):
+            return ball
+    return None
+
 def program_exited():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -135,9 +147,18 @@ def main():
 
     # run the program
     while True:
-        # check if we have to quit
-        if program_exited():
-            break
+        # check events
+        for event in pygame.event.get():
+            # quit
+            if event.type == pygame.QUIT:
+                exit()
+
+            # mouse click
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                (mouse_x, mouse_y) = pygame.mouse.get_pos()
+                ball = get_containing_ball(balls, mouse_x, mouse_y)
+                if ball != None:
+                    ball.toggle_pause()
 
         # update the balls
         dt = clock.tick(60)
